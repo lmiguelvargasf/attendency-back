@@ -8,3 +8,6 @@ class Member(TimeStampedModel):
     last_name = models.CharField(max_length=64)
     preferred_name = models.CharField(max_length=64)
     email = models.EmailField()
+
+    def __str__(self):
+        return self.preferred_name
