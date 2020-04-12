@@ -10,4 +10,7 @@ class Member(TimeStampedModel):
     email = models.EmailField()
 
     def __str__(self):
-        return self.preferred_name
+        if self.preferred_name:
+            return self.preferred_name
+
+        return f'{self.first_name} {self.last_name}'
