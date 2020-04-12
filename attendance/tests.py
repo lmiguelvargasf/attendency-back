@@ -1,6 +1,7 @@
+from datetime import datetime
 import pytest
 
-from .models import Member
+from .models import Member, Project
 
 @pytest.fixture
 def member():
@@ -31,4 +32,7 @@ def test_str_member_when_preferred_name(member):
 @pytest.mark.django_db
 def test_str_project():
     """Test that title is returned as string representation of Member model"""
-    pass
+    start_date = datetime.strptime('2020-04-12', '%Y-%m-%d').date()
+    project = Project.objects.create(title='My Project', start_date=start_date)
+
+    assert str(project) == 'My Project'
