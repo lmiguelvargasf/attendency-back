@@ -1,5 +1,8 @@
 from django.db import models
-from django_extensions.db.models import TimeStampedModel
+from django_extensions.db.models import (
+    TitleDescriptionModel,
+    TimeStampedModel,
+)
 
 
 class Member(TimeStampedModel):
@@ -14,3 +17,8 @@ class Member(TimeStampedModel):
             return self.preferred_name
 
         return f'{self.first_name} {self.last_name}'
+
+
+class Project(TimeStampedModel, TitleDescriptionModel):
+    start_date = models.DateField()
+    members = models.ManyToManyField(Member, related_name='projects')
