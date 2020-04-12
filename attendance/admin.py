@@ -8,4 +8,4 @@ admin.site.register(Member)
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('title', 'start_date', 'description')
+    list_display = ('title', 'start_date', 'description', 'team')
