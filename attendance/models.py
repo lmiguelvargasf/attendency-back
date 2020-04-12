@@ -21,7 +21,7 @@ class Member(TimeStampedModel):
 
 class Project(TimeStampedModel, TitleDescriptionModel):
     start_date = models.DateField()
-    members = models.ManyToManyField(Member, related_name='projects')
+    members = models.ManyToManyField(Member, related_name='projects', blank=True)
 
     def __str__(self):
         return self.title
