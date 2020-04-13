@@ -48,3 +48,6 @@ class Meeting(TimeStampedModel):
     @property
     def date(self):
         return self.date_time.strftime('%Y-%m-%d')
+
+    def __str__(self):
+        return f'{str(self.project)} meeting on {self.date} at {self.time}'

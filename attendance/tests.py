@@ -87,3 +87,10 @@ def test_meeting_time(meeting):
 def test_meeting_date(meeting):
     """Test that date for meeting is returned properly in format YYYY-MM-DD"""
     assert meeting.date == '2020-04-12'
+
+
+@pytest.mark.django_db
+def test_str_meeting(meeting):
+    """Test that string representation for Meeting instance
+    is returned properly"""
+    assert str(meeting) == 'My Project meeting on 2020-04-12 at 17:30'
