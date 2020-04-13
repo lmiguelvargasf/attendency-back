@@ -29,3 +29,13 @@ class Project(TimeStampedModel, TitleDescriptionModel):
     @property
     def team(self):
         return ', '.join(str(member) for member in self.members.all())
+
+
+class Meeting(TimeStampedModel):
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name="meetings",
+        related_query_name="meeting",
+    )
+    date_time = models.DateTimeField()
