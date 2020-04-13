@@ -51,3 +51,20 @@ class Meeting(TimeStampedModel):
 
     def __str__(self):
         return f'{str(self.project)} meeting on {self.date} at {self.time}'
+
+
+class Participation(TimeStampedModel):
+    meeting = models.ForeignKey(
+        Meeting,
+        on_delete=models.CASCADE,
+        related_name="participations",
+        related_query_name="participation",
+    )
+    member = models.ForeignKey(
+        Member,
+        on_delete=models.CASCADE,
+        related_name="participations",
+        related_query_name="participation",
+    )
+    observations = models.TextField(blank=True)
+    attended = models.BooleanField(default=False)
