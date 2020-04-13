@@ -42,7 +42,7 @@ class Meeting(TimeStampedModel):
 
     @property
     def time(self):
-        return self.date_time.strftime('%H:%M:%S')
+        return self.date_time.strftime('%H:%M')
 
 
     @property
