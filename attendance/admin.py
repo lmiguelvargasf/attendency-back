@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Member, Project, Meeting
+from .models import Member, Project, Meeting, Participation
 
 
 admin.site.register(Member)
@@ -14,3 +14,8 @@ class ProjectAdmin(admin.ModelAdmin):
 @admin.register(Meeting)
 class MeetingAdmin(admin.ModelAdmin):
     list_display = ('project', 'date', 'time')
+
+
+@admin.register(Participation)
+class ParticipationAdmin(admin.ModelAdmin):
+    list_display = ('meeting', 'member', 'attended')
