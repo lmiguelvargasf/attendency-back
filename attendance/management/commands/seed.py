@@ -15,6 +15,12 @@ def create_aware_datetime_from_str(datetime_str):
         current_timezone
     )
 
+def create_created_and_modified_dict(d):
+    return {
+        'created': create_aware_datetime_from_str(d['created']),
+        'modified': create_aware_datetime_from_str(d['modified'])
+    }
+
 class Command(BaseCommand):
     help = 'Populates database when it is empty'
 
@@ -22,19 +28,15 @@ class Command(BaseCommand):
         User.objects.create_superuser('m', 'm@mathsistor.com', 'pi3.1415')
         with open('csv_files/attendance_member.csv') as csv_file:
             csv_reader = csv.DictReader(csv_file)
-            Member.objects.bulk_create([Member(**{
-                **row,
-                'created': create_aware_datetime_from_str(row['created']),
-                'modified': create_aware_datetime_from_str(row['modified'])
-            }) for row in csv_reader])
+            Member.objects.bulk_create([Member(
+                **{**row, **create_created_and_modified_dict(row)}
+            ) for row in csv_reader])
         
         with open('csv_files/attendance_project.csv') as csv_file:
             csv_reader = csv.DictReader(csv_file)
-            Project.objects.bulk_create([Project(**{
-                **row,
-                'created': create_aware_datetime_from_str(row['created']),
-                'modified': create_aware_datetime_from_str(row['modified'])
-            }) for row in csv_reader])
+            Project.objects.bulk_create([Project(
+                **{**row, **create_created_and_modified_dict(row)}
+            ) for row in csv_reader])
 
 
     def handle(self, *args, **options):
