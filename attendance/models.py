@@ -39,3 +39,12 @@ class Meeting(TimeStampedModel):
         related_query_name="meeting",
     )
     date_time = models.DateTimeField()
+
+    @property
+    def time(self):
+        return self.date_time.strftime('%H:%M:%S')
+
+
+    @property
+    def date(self):
+        return self.date_time.strftime('%Y-%m-%d')
