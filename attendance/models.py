@@ -7,9 +7,9 @@ from django_extensions.db.models import (
 
 class Member(TimeStampedModel):
     first_name = models.CharField(max_length=64)
-    middle_name = models.CharField(max_length=64, blank=True, default='')
+    middle_name = models.CharField(max_length=64, blank=True)
     last_name = models.CharField(max_length=64)
-    preferred_name = models.CharField(max_length=64, blank=True, default='')
+    preferred_name = models.CharField(max_length=64, blank=True)
     email = models.EmailField()
 
     def __str__(self):
