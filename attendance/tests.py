@@ -1,7 +1,7 @@
 from datetime import datetime
 import pytest
 
-from .models import Member, Project
+from .models import Member, Project, Meeting
 
 @pytest.fixture
 def member():
@@ -16,6 +16,14 @@ def project():
     start_date = datetime.strptime('2020-04-12', '%Y-%m-%d').date()
     return Project.objects.create(title='My Project', start_date=start_date)
 
+
+@pytest.fixture
+def meeting(project):
+    date_time = datetime.strptime('2020-04-12 17:30', '%Y-%m-%d %H:%M')
+    return Meeting.objects.create(
+        project=project,
+        date_time=date_time
+    )
 
 
 @pytest.mark.django_db
@@ -68,3 +76,14 @@ def test_project_with_two_members_returns_member_str_joined_with_commas(
     )
     project.members.add(member, another_member)
     assert project.team == 'Peter Smith, John Doe'
+
+
+@pytest.mark.django_db
+def test_meeting_time(meeting):
+    """Test that time for meeting is returned properly in format HH:MM"""
+    assert meeting.time == '17:30'
+
+@pytest.mark.django_db
+def test_meeting_date(meeting):
+    """Test that date for meeting is returned properly in format YYYY-MM-DD"""
+    assert meeting.date == '2020-04-12'
