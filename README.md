@@ -78,6 +78,15 @@ python manage.py runserver
 
 Open up your browser at [http://localhost:8080][localhost]. You are all set 🎉!
 
+## Running tests
+
+Execute the following command in order to run the tests:
+
+```bash
+pytest
+```
+
+
 [localhost]: http://localhost:8080
 [poetry]: https://python-poetry.org/
 [pyenv]: https://github.com/pyenv/pyenv
