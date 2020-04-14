@@ -1,7 +1,7 @@
 from datetime import datetime
 import pytest
 
-from .models import Member, Project, Meeting
+from .models import Member, Project, Meeting, Participation
 
 @pytest.fixture
 def member():
@@ -12,9 +12,12 @@ def member():
     )
 
 @pytest.fixture
-def project():
+def project(member):
     start_date = datetime.strptime('2020-04-12', '%Y-%m-%d').date()
-    return Project.objects.create(title='My Project', start_date=start_date)
+    project = Project.objects.create(title='My Project', start_date=start_date)
+    project.members.add(member)
+
+    return project
 
 
 @pytest.fixture
@@ -49,23 +52,22 @@ def test_str_project(project):
     assert str(project) == 'My Project'
 
 @pytest.mark.django_db
-def test_project_with_no_member_returns_empty_str_as_team(project):
+def test_project_with_no_member_returns_empty_str_as_team(project, member):
     """Test that empty string is returned when a Project instance
     has no member assinged."""
+    project.members.remove(member)
     assert project.team == ''
 
 @pytest.mark.django_db
 def test_project_with_one_member_returns_member_str(project, member):
     """Test that Member's string representation is returned when a Project
     instance only one member assinged."""
-    project.members.add(member)
     assert project.team == 'John Doe'
 
 
 @pytest.mark.django_db
 def test_project_with_two_members_returns_member_str_joined_with_commas(
-    project,
-    member
+    project
 ):
     """Test that Members' string representation joined by commans is returned when
     a Project instance two members assinged."""
@@ -74,7 +76,7 @@ def test_project_with_two_members_returns_member_str_joined_with_commas(
         last_name='Smith',
         email='peter.smith@exaple.com'
     )
-    project.members.add(member, another_member)
+    project.members.add(another_member)
     assert project.team == 'Peter Smith, John Doe'
 
 
@@ -94,3 +96,15 @@ def test_str_meeting(meeting):
     """Test that string representation for Meeting instance
     is returned properly"""
     assert str(meeting) == 'My Project meeting on 2020-04-12 at 17:30'
+
+@pytest.mark.django_db
+def test_participation_is_created_when_meeting_is_created(meeting, member):
+    """Test that Participation instance with attended field as False is associated with
+    meeting and member is created when a meeting is created"""
+    queryset = Participation.objects.all()
+
+    assert len(queryset) == 1
+    participation = queryset.first()
+    assert participation.member == member
+    assert participation.meeting == meeting
+    assert not participation.attended
