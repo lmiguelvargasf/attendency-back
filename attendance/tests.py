@@ -1,4 +1,7 @@
 from datetime import datetime
+
+from django.utils import timezone
+
 import pytest
 
 from .models import Member, Project, Meeting, Participation
@@ -23,6 +26,7 @@ def project(member):
 @pytest.fixture
 def meeting(project):
     date_time = datetime.strptime('2020-04-12 17:30', '%Y-%m-%d %H:%M')
+    date_time = timezone.make_aware(date_time, timezone=timezone.get_current_timezone())
     return Meeting.objects.create(
         project=project,
         date_time=date_time
