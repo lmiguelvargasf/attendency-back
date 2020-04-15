@@ -1,8 +1,9 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
 from attendance.models import Project
 
-class ProjectSerializer(ModelSerializer):
+class ProjectTableSerializer(serializers.ModelSerializer):
+    key = serializers.IntegerField(source='id')
     class Meta:
         model = Project
-        fields = '__all__'
+        fields = ('key', 'title', 'start_date', 'description', 'team')
