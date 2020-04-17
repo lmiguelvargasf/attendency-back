@@ -22,11 +22,13 @@ class Member(TimeStampedModel):
 
 class Project(TimeStampedModel, TitleDescriptionModel):
     start_date = models.DateField()
-    members = models.ManyToManyField(Member, related_name='projects', blank=True)
+    members = models.ManyToManyField(Member,
+                                     related_name='projects',
+                                     blank=True)
 
     def __str__(self):
         return self.title
-    
+
     @property
     def team(self):
         return ', '.join(str(member) for member in self.members.all())
