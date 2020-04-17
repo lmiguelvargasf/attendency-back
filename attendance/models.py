@@ -3,6 +3,7 @@ from django_extensions.db.models import (
     TitleDescriptionModel,
     TimeStampedModel,
 )
+from django.utils import timezone
 
 
 class Member(TimeStampedModel):
@@ -42,12 +43,12 @@ class Meeting(TimeStampedModel):
 
     @property
     def time(self):
-        return self.date_time.strftime('%H:%M')
+        return  timezone.localtime(self.date_time).strftime('%H:%M')
 
 
     @property
     def date(self):
-        return self.date_time.strftime('%Y-%m-%d')
+        return timezone.localtime(self.date_time).strftime('%Y-%m-%d')
 
     def __str__(self):
         return f'{str(self.project)} meeting on {self.date} at {self.time}'
