@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from attendance.models import Project, Member
+from attendance.models import Project, Member, Meeting
 
 
 class ProjectTableSerializer(serializers.ModelSerializer):
@@ -17,3 +17,11 @@ class MemberTableSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ('key', 'first_name', 'last_name', 'email')
+
+
+class MeetingTableSerializer(serializers.ModelSerializer):
+    key = serializers.IntegerField(source='id')
+
+    class Meta:
+        model = Meeting
+        fields = ('key', 'project', 'date', 'time')
