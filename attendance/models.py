@@ -44,12 +44,16 @@ class Meeting(TimeStampedModel):
     date_time = models.DateTimeField()
 
     @property
+    def __localtime(self):
+        return timezone.localtime(self.date_time)
+
+    @property
     def date(self):
-        return timezone.localtime(self.date_time).strftime('%Y-%m-%d')
+        return self.__localtime.strftime('%Y-%m-%d')
 
     @property
     def time(self):
-        return timezone.localtime(self.date_time).strftime('%H:%M')
+        return self.__localtime.strftime('%H:%M')
 
     def __str__(self):
         return f'{str(self.project)} meeting on {self.date} at {self.time}'
