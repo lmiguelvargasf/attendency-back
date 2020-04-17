@@ -22,11 +22,13 @@ class Member(TimeStampedModel):
 
 class Project(TimeStampedModel, TitleDescriptionModel):
     start_date = models.DateField()
-    members = models.ManyToManyField(Member, related_name='projects', blank=True)
+    members = models.ManyToManyField(Member,
+                                     related_name='projects',
+                                     blank=True)
 
     def __str__(self):
         return self.title
-    
+
     @property
     def team(self):
         return ', '.join(str(member) for member in self.members.all())
@@ -42,13 +44,16 @@ class Meeting(TimeStampedModel):
     date_time = models.DateTimeField()
 
     @property
-    def time(self):
-        return  timezone.localtime(self.date_time).strftime('%H:%M')
-
+    def __localtime(self):
+        return timezone.localtime(self.date_time)
 
     @property
     def date(self):
-        return timezone.localtime(self.date_time).strftime('%Y-%m-%d')
+        return self.__localtime.strftime('%Y-%m-%d')
+
+    @property
+    def time(self):
+        return self.__localtime.strftime('%H:%M')
 
     def __str__(self):
         return f'{str(self.project)} meeting on {self.date} at {self.time}'
