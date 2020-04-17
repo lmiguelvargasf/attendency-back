@@ -77,6 +77,6 @@ def test_meeting_table_serializer_key_content(
 def test_meeting_table_serializer_project_content(
     meeting, meeeting_table_serializer
 ):
-    """Test that MeetingTableSerializer's roject field contains
+    """Test that MeetingTableSerializer's project field contains
     the string representation of Meetings's project field"""
     assert meeeting_table_serializer.data['project'] == str(meeting.project)
