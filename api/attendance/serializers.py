@@ -21,6 +21,7 @@ class MemberTableSerializer(serializers.ModelSerializer):
 
 class MeetingTableSerializer(serializers.ModelSerializer):
     key = serializers.IntegerField(source='id')
+    project = serializers.CharField()
 
     class Meta:
         model = Meeting
