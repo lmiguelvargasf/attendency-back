@@ -8,7 +8,7 @@ class BaseReactModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         abstract = True
-        fields = ('key',)
+        fields = ('key', )
 
 
 class ProjectTableSerializer(BaseReactModelSerializer):
@@ -23,7 +23,7 @@ class MemberTableSerializer(BaseReactModelSerializer):
     class Meta:
         model = Member
         fields = BaseReactModelSerializer.Meta.fields + (
-            'key', 'first_name', 'last_name', 'email'
+            'first_name', 'last_name', 'email'
         )
 
 
@@ -33,5 +33,5 @@ class MeetingTableSerializer(BaseReactModelSerializer):
     class Meta:
         model = Meeting
         fields = BaseReactModelSerializer.Meta.fields + (
-            'key', 'project', 'date', 'time'
+            'project', 'date', 'time',
         )
