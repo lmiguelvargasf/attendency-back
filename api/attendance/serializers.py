@@ -3,25 +3,35 @@ from rest_framework import serializers
 from attendance.models import Project, Member, Meeting
 
 
-class BaseReactSerializer(serializers.ModelSerializer):
+class BaseReactModelSerializer(serializers.ModelSerializer):
     key = serializers.IntegerField(source='id')
 
+    class Meta:
+        abstract = True
+        fields = ('key',)
 
-class ProjectTableSerializer(BaseReactSerializer):
+
+class ProjectTableSerializer(BaseReactModelSerializer):
     class Meta:
         model = Project
-        fields = ('key', 'title', 'start_date', 'description', 'team')
+        fields = BaseReactModelSerializer.Meta.fields + (
+            'title', 'start_date', 'description', 'team'
+        )
 
 
-class MemberTableSerializer(BaseReactSerializer):
+class MemberTableSerializer(BaseReactModelSerializer):
     class Meta:
         model = Member
-        fields = ('key', 'first_name', 'last_name', 'email')
+        fields = BaseReactModelSerializer.Meta.fields + (
+            'key', 'first_name', 'last_name', 'email'
+        )
 
 
-class MeetingTableSerializer(BaseReactSerializer):
+class MeetingTableSerializer(BaseReactModelSerializer):
     project = serializers.CharField()
 
     class Meta:
         model = Meeting
-        fields = ('key', 'project', 'date', 'time')
+        fields = BaseReactModelSerializer.Meta.fields + (
+            'key', 'project', 'date', 'time'
+        )
