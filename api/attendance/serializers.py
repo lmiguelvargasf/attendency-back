@@ -3,12 +3,12 @@ from rest_framework import serializers
 from attendance.models import Project, Member, Meeting
 
 
-class BaseReactModelSerializer(serializers.ModelSerializer):
+class BaseReactModelSerializer(serializers.HyperlinkedModelSerializer):
     key = serializers.IntegerField(source='id')
 
     class Meta:
         abstract = True
-        fields = ('key', )
+        fields = ('key', 'url')
 
 
 class ProjectTableSerializer(BaseReactModelSerializer):
@@ -33,5 +33,7 @@ class MeetingTableSerializer(BaseReactModelSerializer):
     class Meta:
         model = Meeting
         fields = BaseReactModelSerializer.Meta.fields + (
-            'project', 'date', 'time',
+            'project',
+            'date',
+            'time',
         )

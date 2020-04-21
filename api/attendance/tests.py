@@ -7,25 +7,25 @@ from api.attendance.serializers import (
 
 
 @pytest.fixture
-def project_table_serializer(project):
-    return ProjectTableSerializer(project)
+def project_table_serializer(project, serializer_context):
+    return ProjectTableSerializer(project, context=serializer_context)
 
 
 @pytest.fixture
-def member_table_serializer(member):
-    return MemberTableSerializer(member)
+def member_table_serializer(member, serializer_context):
+    return MemberTableSerializer(member, context=serializer_context)
 
 
 @pytest.fixture
-def meeeting_table_serializer(meeting):
-    return MeetingTableSerializer(meeting)
+def meeeting_table_serializer(meeting, serializer_context):
+    return MeetingTableSerializer(meeting, context=serializer_context)
 
 
 @pytest.mark.django_db
 def test_project_table_serializer_has_exected_fields(project_table_serializer):
     """Test that ProjectTableSerializer contains expected fields"""
     assert set(project_table_serializer.data.keys()) == {
-        'key', 'title', 'start_date', 'description', 'team'
+        'key', 'url', 'title', 'start_date', 'description', 'team'
     }
 
 
@@ -43,6 +43,7 @@ def test_member_table_serializer_has_exected_fields(member_table_serializer):
     """Test that MemberTableSerializer contains expected fields"""
     assert set(member_table_serializer.data.keys()) == {
         'key',
+        'url',
         'first_name',
         'last_name',
         'email',
@@ -60,7 +61,7 @@ def test_member_table_serializer_key_content(member, member_table_serializer):
 def test_meeting_table_serializer_has_exected_fields(meeeting_table_serializer):
     """Test that MeetingTableSerializer contains expected fields"""
     assert set(meeeting_table_serializer.data.keys()) == {
-        'key', 'project', 'date', 'time'
+        'key', 'url', 'project', 'date', 'time'
     }
 
 
