@@ -4,7 +4,7 @@ from attendance.models import Project, Member, Meeting
 
 
 class BaseReactModelSerializer(serializers.HyperlinkedModelSerializer):
-    key = serializers.IntegerField(source='id')
+    key = serializers.IntegerField(source='id', read_only=True)
 
     class Meta:
         abstract = True
