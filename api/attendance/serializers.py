@@ -15,8 +15,9 @@ class ProjectTableSerializer(BaseReactModelSerializer):
     class Meta:
         model = Project
         fields = BaseReactModelSerializer.Meta.fields + (
-            'title', 'start_date', 'description', 'team'
+            'title', 'start_date', 'description', 'team', 'members'
         )
+        extra_kwargs = {'members': {'write_only': True}}
 
 
 class MemberTableSerializer(BaseReactModelSerializer):
