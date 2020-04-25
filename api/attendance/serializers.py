@@ -11,6 +11,12 @@ class BaseReactModelSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('key', 'url')
 
 
+class SimpleProjectSerializer(BaseReactModelSerializer):
+    class Meta:
+        model = Project
+        fields = BaseReactModelSerializer.Meta.fields + ('title', )
+
+
 class ProjectTableSerializer(BaseReactModelSerializer):
     class Meta:
         model = Project
