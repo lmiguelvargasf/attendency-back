@@ -1,10 +1,14 @@
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from .views import ProjectViewSet, MemberViewSet, MeetingViewSet
+from .views import ProjectViewSet, MemberViewSet, MeetingViewSet, SimpleProjectList
 
 router = DefaultRouter()
 router.register(r'projects', ProjectViewSet)
 router.register(r'members', MemberViewSet)
 router.register(r'meetings', MeetingViewSet)
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', include(router.urls)),
+    path('simple-projects/', SimpleProjectList.as_view())
+]
