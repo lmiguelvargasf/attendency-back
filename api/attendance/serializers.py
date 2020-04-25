@@ -11,21 +11,35 @@ class BaseReactModelSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('key', 'url')
 
 
+class SimpleProjectSerializer(BaseReactModelSerializer):
+
+    class Meta:
+        model = Project
+        fields = BaseReactModelSerializer.Meta.fields + ('title',)
+
+
 class ProjectTableSerializer(BaseReactModelSerializer):
+
     class Meta:
         model = Project
         fields = BaseReactModelSerializer.Meta.fields + (
-            'title', 'start_date', 'description', 'team', 'members'
-        )
+            'title', 'start_date', 'description', 'team', 'members')
         extra_kwargs = {'members': {'write_only': True}}
 
 
 class MemberTableSerializer(BaseReactModelSerializer):
+
     class Meta:
         model = Member
-        fields = BaseReactModelSerializer.Meta.fields + (
-            'first_name', 'last_name', 'email'
-        )
+        fields = BaseReactModelSerializer.Meta.fields + ('first_name',
+                                                         'last_name', 'email')
+
+
+class MeetingSerializer(BaseReactModelSerializer):
+
+    class Meta:
+        model = Meeting
+        fields = BaseReactModelSerializer.Meta.fields + ('project', 'date_time')
 
 
 class MeetingTableSerializer(BaseReactModelSerializer):
