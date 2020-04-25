@@ -1,10 +1,10 @@
 import pytest
 
 from attendance.models import Project
-from api.attendance.serializers import (
-    ProjectTableSerializer, MemberTableSerializer, MeetingTableSerializer,
-    SimpleProjectSerializer
-)
+from api.attendance.serializers import (ProjectTableSerializer,
+                                        MemberTableSerializer,
+                                        MeetingTableSerializer,
+                                        SimpleProjectSerializer)
 
 
 @pytest.fixture
@@ -29,16 +29,14 @@ def meeeting_table_serializer(meeting, serializer_context):
 
 @pytest.mark.django_db
 def test_simple_project_serializer_has_expected_fields(
-    simple_project_serializer
-):
+    simple_project_serializer):
     """Test that SimpleProjectSerializer contains expected fields"""
     assert set(simple_project_serializer.data.keys()) == {'key', 'url', 'title'}
 
 
 @pytest.mark.django_db
-def test_simple_project_serializer_key_content(
-    project, simple_project_serializer
-):
+def test_simple_project_serializer_key_content(project,
+                                               simple_project_serializer):
     """Test that SimpleProjectSerializer's key field contains
     the value of Project's id field"""
     assert simple_project_serializer.data['key'] == project.id
@@ -53,9 +51,8 @@ def test_project_table_serializer_has_exected_fields(project_table_serializer):
 
 
 @pytest.mark.django_db
-def test_project_table_serializer_key_content(
-    project, project_table_serializer
-):
+def test_project_table_serializer_key_content(project,
+                                              project_table_serializer):
     """Test that ProjectTableSerializer's key field contains
     the value of Project's id field"""
     assert project_table_serializer.data['key'] == project.id
@@ -89,18 +86,16 @@ def test_meeting_table_serializer_has_exected_fields(meeeting_table_serializer):
 
 
 @pytest.mark.django_db
-def test_meeting_table_serializer_key_content(
-    meeting, meeeting_table_serializer
-):
+def test_meeting_table_serializer_key_content(meeting,
+                                              meeeting_table_serializer):
     """Test that MeetingTableSerializer's key field contains
     the value of Meetings's id field"""
     assert meeeting_table_serializer.data['key'] == meeting.id
 
 
 @pytest.mark.django_db
-def test_meeting_table_serializer_project_content(
-    meeting, meeeting_table_serializer
-):
+def test_meeting_table_serializer_project_content(meeting,
+                                                  meeeting_table_serializer):
     """Test that MeetingTableSerializer's project field contains
     the string representation of Meetings's project field"""
     assert meeeting_table_serializer.data['project'] == str(meeting.project)
