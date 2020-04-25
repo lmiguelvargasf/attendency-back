@@ -4,7 +4,7 @@ from attendance.models import Project, Member, Meeting
 
 
 class BaseReactModelSerializer(serializers.HyperlinkedModelSerializer):
-    key = serializers.IntegerField(source='id')
+    key = serializers.IntegerField(source='id', read_only=True)
 
     class Meta:
         abstract = True
@@ -15,8 +15,9 @@ class ProjectTableSerializer(BaseReactModelSerializer):
     class Meta:
         model = Project
         fields = BaseReactModelSerializer.Meta.fields + (
-            'title', 'start_date', 'description', 'team'
+            'title', 'start_date', 'description', 'team', 'members'
         )
+        extra_kwargs = {'members': {'write_only': True}}
 
 
 class MemberTableSerializer(BaseReactModelSerializer):
