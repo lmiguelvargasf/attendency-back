@@ -102,7 +102,7 @@ def test_meeting_serializer_key_content(meeting, meeting_serializer):
 def test_meeting_table_serializer_has_exected_fields(meeeting_table_serializer):
     """Test that MeetingTableSerializer contains expected fields"""
     assert set(meeeting_table_serializer.data.keys()) == {
-        'key', 'url', 'project', 'date', 'time'
+        'key', 'url', 'project', 'project_title', 'date', 'time'
     }
 
 
@@ -115,8 +115,8 @@ def test_meeting_table_serializer_key_content(meeting,
 
 
 @pytest.mark.django_db
-def test_meeting_table_serializer_project_content(meeting,
+def test_meeting_table_serializer_project_title_content(meeting,
                                                   meeeting_table_serializer):
-    """Test that MeetingTableSerializer's project field contains
+    """Test that MeetingTableSerializer's project_title field contains
     the string representation of Meetings's project field"""
-    assert meeeting_table_serializer.data['project'] == str(meeting.project)
+    assert meeeting_table_serializer.data['project_title'] == str(meeting.project)
