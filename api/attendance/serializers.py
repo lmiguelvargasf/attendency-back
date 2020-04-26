@@ -43,12 +43,13 @@ class MeetingSerializer(BaseReactModelSerializer):
 
 
 class MeetingTableSerializer(BaseReactModelSerializer):
-    project = serializers.CharField()
+    project_title = serializers.CharField(source='project', read_only=True)
 
     class Meta:
         model = Meeting
         fields = BaseReactModelSerializer.Meta.fields + (
             'project',
+            'project_title',
             'date',
             'time',
         )
