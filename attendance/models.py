@@ -42,6 +42,7 @@ class Meeting(TimeStampedModel):
         related_query_name="meeting",
     )
     date_time = models.DateTimeField()
+    observations = models.TextField(blank=True)
 
     @property
     def __localtime(self):
@@ -72,5 +73,4 @@ class Participation(TimeStampedModel):
         related_name="participations",
         related_query_name="participation",
     )
-    observations = models.TextField(blank=True)
     attended = models.BooleanField(default=False)
