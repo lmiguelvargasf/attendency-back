@@ -72,5 +72,4 @@ class Participation(TimeStampedModel):
         related_name="participations",
         related_query_name="participation",
     )
-    observations = models.TextField(blank=True)
     attended = models.BooleanField(default=False)
