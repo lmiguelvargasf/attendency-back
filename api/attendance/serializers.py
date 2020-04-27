@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from attendance.models import Project, Member, Meeting
+from attendance.models import Project, Member, Meeting, Participation
 
 
 class BaseReactModelSerializer(serializers.HyperlinkedModelSerializer):
@@ -52,4 +52,17 @@ class MeetingTableSerializer(BaseReactModelSerializer):
             'project_title',
             'date',
             'time',
+        )
+
+
+class ParticipationSerializer(BaseReactModelSerializer):
+    member_name = serializers.CharField(source='member.preferred_name', read_only=True)
+
+    class Meta():
+        model = Participation
+        fields = BaseException.Meta.fields + (
+            'meeting',
+            'member',
+            'member_name',
+            'attended'
         )
