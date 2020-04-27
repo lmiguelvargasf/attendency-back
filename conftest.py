@@ -39,7 +39,11 @@ def project(member):
 @pytest.fixture
 def meeting(project):
     date_time = datetime.strptime('2020-04-12 17:30', '%Y-%m-%d %H:%M')
-    date_time = timezone.make_aware(
-        date_time, timezone=timezone.get_current_timezone()
-    )
+    date_time = timezone.make_aware(date_time,
+                                    timezone=timezone.get_current_timezone())
     return Meeting.objects.create(project=project, date_time=date_time)
+
+
+@pytest.fixture
+def participation(meeting, member):
+    return Participation.objects.create(meeting=meeting, member=member)
