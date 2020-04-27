@@ -55,12 +55,14 @@ class MeetingTableSerializer(BaseReactModelSerializer):
         )
 
 
-class ParticipationSerializer(BaseReactModelSerializer):
+class ParticipationSerializer(serializers.ModelSerializer):
+    key = serializers.IntegerField(source='id', read_only=True)
     member_name = serializers.CharField(source='member.preferred_name', read_only=True)
 
-    class Meta():
+    class Meta:
         model = Participation
-        fields = BaseException.Meta.fields + (
+        fields = (
+            'key',
             'meeting',
             'member',
             'member_name',
