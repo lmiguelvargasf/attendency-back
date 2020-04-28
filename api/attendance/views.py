@@ -46,3 +46,17 @@ class MeetingViewSet(ModelViewSet):
         }
 
         return Response(data)
+
+    @action(detail=True, methods=['post'], url_path='track-participation')
+    def track_participation(self, request, pk=None):
+        meeting = self.get_object()
+        data = request.data
+
+        for p in data['participations']:
+            participation = Participation.objects.get(id=p['key'])
+            participation.attended = p['attended']
+            participation.save()
+        meeting.observations = data['observations']
+        meeting.save()
+
+        return Response()
