@@ -1,8 +1,10 @@
 from datetime import datetime
+import json
 
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework.status import HTTP_200_OK
+from rest_framework.test import APIClient
 from rest_framework.utils.serializer_helpers import ReturnList
 
 import pytest
@@ -81,3 +83,29 @@ def test_participation_view_two_participation_and_observations(
     assert data['participations'][1] == ParticipationSerializer(
         participations[1]).data
     assert data['observations'] == meeting.observations
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize('attended', [True, False])
+def test_track_participation_updates_attended_in_participation_and_observations_in_meeting(
+    meeting, attended):
+    """Test that track_participation view in MeetingViewSet returns 200 response,
+    and it also updates the value of attended field in Participation instance
+    and the value of observations field in Meeting instance"""
+    url = reverse('meeting-track-participation', kwargs={'pk': meeting.pk})
+    participation = meeting.participations.first()
+    data = {
+        'participations': [{
+            'key': participation.id,
+            'attended': attended
+        }],
+        'observations': 'This is just a test.'
+    }
+    client = APIClient()
+    response = client.post(url, data, format='json')
+    participation.refresh_from_db()
+    meeting.refresh_from_db()
+
+    assert response.status_code == HTTP_200_OK
+    assert participation.attended == attended
+    assert meeting.observations == 'This is just a test.'
