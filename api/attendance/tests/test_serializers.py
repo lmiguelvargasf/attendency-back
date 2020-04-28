@@ -73,7 +73,9 @@ def test_member_table_serializer_has_exected_fields(member_table_serializer):
         'key',
         'url',
         'first_name',
+        'middle_name',
         'last_name',
+        'preferred_name',
         'email',
     }
 

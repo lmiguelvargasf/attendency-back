@@ -31,8 +31,12 @@ class MemberTableSerializer(BaseReactModelSerializer):
 
     class Meta:
         model = Member
-        fields = BaseReactModelSerializer.Meta.fields + ('first_name',
-                                                         'last_name', 'email')
+        fields = BaseReactModelSerializer.Meta.fields + (
+            'first_name',
+            'middle_name',
+            'last_name',
+            'preferred_name',
+            'email')
 
 
 class MeetingSerializer(BaseReactModelSerializer):
@@ -57,14 +61,9 @@ class MeetingTableSerializer(BaseReactModelSerializer):
 
 class ParticipationSerializer(serializers.ModelSerializer):
     key = serializers.IntegerField(source='id', read_only=True)
-    member_name = serializers.CharField(source='member.preferred_name', read_only=True)
+    member_name = serializers.CharField(source='member.preferred_name',
+                                        read_only=True)
 
     class Meta:
         model = Participation
-        fields = (
-            'key',
-            'meeting',
-            'member',
-            'member_name',
-            'attended'
-        )
+        fields = ('key', 'meeting', 'member', 'member_name', 'attended')
