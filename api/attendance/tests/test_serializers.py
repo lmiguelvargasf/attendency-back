@@ -1,11 +1,8 @@
 import pytest
 
-from attendance.models import Project
-from api.attendance.serializers import (ProjectTableSerializer,
-                                        MemberTableSerializer,
-                                        MeetingTableSerializer,
-                                        SimpleProjectSerializer,
-                                        MeetingSerializer)
+from api.attendance.serializers import (
+    ProjectTableSerializer, MemberTableSerializer, MeetingTableSerializer,
+    SimpleProjectSerializer, MeetingSerializer, ParticipationSerializer)
 
 
 @pytest.fixture
@@ -31,6 +28,11 @@ def meeeting_table_serializer(meeting, serializer_context):
 @pytest.fixture
 def meeting_serializer(meeting, serializer_context):
     return MeetingSerializer(meeting, context=serializer_context)
+
+
+@pytest.fixture
+def participation_serializer(participation):
+    return ParticipationSerializer(participation)
 
 
 @pytest.mark.django_db
@@ -115,8 +117,34 @@ def test_meeting_table_serializer_key_content(meeting,
 
 
 @pytest.mark.django_db
-def test_meeting_table_serializer_project_title_content(meeting,
-                                                  meeeting_table_serializer):
+def test_meeting_table_serializer_project_title_content(
+    meeting, meeeting_table_serializer):
     """Test that MeetingTableSerializer's project_title field contains
     the string representation of Meetings's project field"""
-    assert meeeting_table_serializer.data['project_title'] == str(meeting.project)
+    assert meeeting_table_serializer.data['project_title'] == str(
+        meeting.project)
+
+
+@pytest.mark.django_db
+def test_participation_serializer_has_expected_fields(participation_serializer):
+    """Test that ParticipationSerializer contains expected fields"""
+    assert set(participation_serializer.data.keys()) == {
+        'key', 'meeting', 'member', 'member_name', 'attended'
+    }
+
+
+@pytest.mark.django_db
+def test_participation_serializer_key_content(participation,
+                                              participation_serializer):
+    """Test that ParticipationSerializer's key field contains the value of
+    Participation's id field"""
+    assert participation_serializer.data['key'] == participation.id
+
+
+@pytest.mark.django_db
+def test_participation_serializer_member_name_content(participation,
+                                                      participation_serializer):
+    """Test that ParticipationSerializer's member_name field contains the value
+    of Participations's member's preferred_name field"""
+    assert participation_serializer.data[
+        'member_name'] == participation.member.preferred_name

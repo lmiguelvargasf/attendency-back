@@ -1,10 +1,12 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
-from attendance.models import Project, Member, Meeting
+from attendance.models import Project, Member, Meeting, Participation
 from .serializers import (ProjectTableSerializer, MemberTableSerializer,
                           MeetingTableSerializer, SimpleProjectSerializer,
-                          MeetingSerializer)
+                          MeetingSerializer, ParticipationSerializer)
 
 
 class SimpleProjectList(ListAPIView):
@@ -30,3 +32,31 @@ class MeetingTableList(ListAPIView):
 class MeetingViewSet(ModelViewSet):
     queryset = Meeting.objects.all()
     serializer_class = MeetingSerializer
+
+    @action(detail=True)
+    def participation(self, request, pk=None):
+        meeting = self.get_object()
+        participations = meeting.participations.all()
+        participation_serializer = ParticipationSerializer(
+            participations, many=True
+        )
+        data = {
+            'participations': participation_serializer.data,
+            'observations': meeting.observations
+        }
+
+        return Response(data)
+
+    @action(detail=True, methods=['post'], url_path='track-participation')
+    def track_participation(self, request, pk=None):
+        meeting = self.get_object()
+        data = request.data
+
+        for p in data['participations']:
+            participation = Participation.objects.get(id=p['key'])
+            participation.attended = p['attended']
+            participation.save()
+        meeting.observations = data['observations']
+        meeting.save()
+
+        return Response()
