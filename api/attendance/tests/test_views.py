@@ -12,12 +12,11 @@ from api.attendance.serializers import ParticipationSerializer
 
 
 @pytest.mark.django_db
-def test_participation_view_no_participations_no_observations(client):
+def test_participation_view_no_participations_no_observations(client, project):
     """Test that participation view in MeetingViewSet returns 200 reponse,
     data has participations which is an empty list, and observations which is a string
     which is empty"""
-    start_date = datetime.strptime('2020-04-12', '%Y-%m-%d').date()
-    project = Project.objects.create(title='My Project', start_date=start_date)
+    project.members.clear()
     date_time = datetime.strptime('2020-04-12 17:30', '%Y-%m-%d %H:%M')
     date_time = timezone.make_aware(date_time,
                                     timezone=timezone.get_current_timezone())
