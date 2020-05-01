@@ -16,7 +16,7 @@ def project_serializer(project, serializer_context):
 
 
 @pytest.fixture
-def member_table_serializer(member, serializer_context):
+def member_serializer(member, serializer_context):
     return MemberSerializer(member, context=serializer_context)
 
 
@@ -67,9 +67,9 @@ def test_project_serializer_key_content(project,
 
 
 @pytest.mark.django_db
-def test_member_table_serializer_has_exected_fields(member_table_serializer):
+def test_member_serializer_has_exected_fields(member_serializer):
     """Test that MemberSerializer contains expected fields"""
-    assert set(member_table_serializer.data.keys()) == {
+    assert set(member_serializer.data.keys()) == {
         'key',
         'url',
         'first_name',
@@ -81,10 +81,10 @@ def test_member_table_serializer_has_exected_fields(member_table_serializer):
 
 
 @pytest.mark.django_db
-def test_member_table_serializer_key_content(member, member_table_serializer):
+def test_member_serializer_key_content(member, member_serializer):
     """Test that MemberSerializer's key field contains
     the value of Member's id field"""
-    assert member_table_serializer.data['key'] == member.id
+    assert member_serializer.data['key'] == member.id
 
 
 @pytest.mark.django_db
