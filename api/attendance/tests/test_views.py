@@ -12,6 +12,9 @@ import pytest
 from attendance.models import Project, Meeting, Member
 from api.attendance.serializers import ParticipationSerializer
 
+@pytest.fixture
+def api_client():
+    return APIClient()
 
 @pytest.mark.django_db
 def test_all_members_when_no_members_in_project(client, project, member):
