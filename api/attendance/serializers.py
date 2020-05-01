@@ -27,7 +27,7 @@ class ProjectSerializer(BaseReactModelSerializer):
         extra_kwargs = {'members': {'write_only': True}}
 
 
-class MemberTableSerializer(BaseReactModelSerializer):
+class MemberSerializer(BaseReactModelSerializer):
 
     class Meta:
         model = Member

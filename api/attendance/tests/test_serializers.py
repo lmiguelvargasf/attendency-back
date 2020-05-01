@@ -1,7 +1,7 @@
 import pytest
 
 from api.attendance.serializers import (
-    ProjectSerializer, MemberTableSerializer, MeetingTableSerializer,
+    ProjectSerializer, MemberSerializer, MeetingTableSerializer,
     SimpleProjectSerializer, MeetingSerializer, ParticipationSerializer)
 
 
@@ -17,7 +17,7 @@ def project_serializer(project, serializer_context):
 
 @pytest.fixture
 def member_table_serializer(member, serializer_context):
-    return MemberTableSerializer(member, context=serializer_context)
+    return MemberSerializer(member, context=serializer_context)
 
 
 @pytest.fixture
@@ -68,7 +68,7 @@ def test_project_serializer_key_content(project,
 
 @pytest.mark.django_db
 def test_member_table_serializer_has_exected_fields(member_table_serializer):
-    """Test that MemberTableSerializer contains expected fields"""
+    """Test that MemberSerializer contains expected fields"""
     assert set(member_table_serializer.data.keys()) == {
         'key',
         'url',
@@ -82,7 +82,7 @@ def test_member_table_serializer_has_exected_fields(member_table_serializer):
 
 @pytest.mark.django_db
 def test_member_table_serializer_key_content(member, member_table_serializer):
-    """Test that MemberTableSerializer's key field contains
+    """Test that MemberSerializer's key field contains
     the value of Member's id field"""
     assert member_table_serializer.data['key'] == member.id
 
