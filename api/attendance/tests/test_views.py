@@ -3,7 +3,7 @@ import json
 
 from django.urls import reverse
 from django.utils import timezone
-from rest_framework.status import HTTP_200_OK
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.test import APIClient
 from rest_framework.utils.serializer_helpers import ReturnList
 
@@ -12,9 +12,18 @@ import pytest
 from attendance.models import Project, Meeting, Member
 from api.attendance.serializers import ParticipationSerializer
 
+
 @pytest.fixture
 def api_client():
     return APIClient()
+
+
+@pytest.fixture
+def new_member():
+    return Member.objects.create(first_name='Peter',
+                                 last_name='Jones',
+                                 preferred_name='Pete',
+                                 email='peter.jones@gmail.com')
 
 
 @pytest.mark.django_db
@@ -32,13 +41,10 @@ def test_all_members_when_no_members_in_project(api_client, project, member):
 
 
 @pytest.mark.django_db
-def test_remaining_members_when_some_members_in_project(api_client, project):
+def test_remaining_members_when_some_members_in_project(api_client, project,
+                                                        new_member):
     """Test that remaining members are retried when calling service
     non-members if project has already some members"""
-    new_member = Member.objects.create(first_name='Peter',
-                                       last_name='Jones',
-                                       email='peter.jones@gmail.com')
-
     url = reverse('project-non-members', kwargs={'pk': project.pk})
     response = api_client.get(url)
     data = response.data
@@ -60,7 +66,49 @@ def test_no_members_when_all_members_in_project(api_client, project):
 
 
 @pytest.mark.django_db
-def test_participation_view_no_participations_no_observations(api_client, project):
+def test_400_response_when_member_does_not_exist(api_client, project):
+    """Test that 400 response is returned when trying to add a member
+    who does not exist to a project"""
+    url = reverse('project-add-member', kwargs={'pk': project.pk})
+    response = api_client.post(url, {'key': 100}, format='json')
+    data = response.data
+
+    assert response.status_code == HTTP_400_BAD_REQUEST
+    assert 'error' in data
+    assert data['error'] == 'Member does not exists'
+    assert len(project.members.all()) == 1
+
+
+@pytest.mark.django_db
+def test_400_response_when_member_already_in_project(api_client, project,
+                                                     member):
+    """Test that 400 response is returned when trying to add a member
+    that is already in the project"""
+    url = reverse('project-add-member', kwargs={'pk': project.pk})
+    response = api_client.post(url, {'key': member.pk}, format='json')
+    data = response.data
+
+    assert response.status_code == HTTP_400_BAD_REQUEST
+    assert 'error' in data
+    assert data['error'] == 'Member already in project'
+    assert len(project.members.all()) == 1
+
+
+@pytest.mark.django_db
+def test_member_is_added_to_project(api_client, project, new_member):
+    """Test that a member is successfully added to a project"""
+    url = reverse('project-add-member', kwargs={'pk': project.pk})
+    response = api_client.post(url, {'key': new_member.pk}, format='json')
+    data = response.data
+
+    assert response.status_code == HTTP_200_OK
+    assert len(project.members.all()) == 2
+    assert project.members.first().id == new_member.pk
+
+
+@pytest.mark.django_db
+def test_participation_view_no_participations_no_observations(
+    api_client, project):
     """Test that participation view in MeetingViewSet returns 200 reponse,
     data has participations which is an empty list, and observations which is a string
     which is empty"""
