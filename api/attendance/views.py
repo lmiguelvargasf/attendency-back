@@ -1,6 +1,7 @@
 from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.viewsets import ModelViewSet
 
 from attendance.models import Project, Member, Meeting, Participation
@@ -26,6 +27,25 @@ class ProjectViewSet(ModelViewSet):
             non_members, many=True, context=self.get_serializer_context())
 
         return Response(member_serializer.data)
+
+    @action(detail=True, methods=['post'], url_path='add-member')
+    def add_member(self, request, pk=None):
+        project = self.get_object()
+
+        try:
+            member = Member.objects.get(id=request.data['key'])
+        except Member.DoesNotExist:
+            return Response({'error': 'Member does not exists'},
+                            status=HTTP_400_BAD_REQUEST)
+
+        if member in project.members.all():
+            return Response({'error': 'Member already in project'},
+                            status=HTTP_400_BAD_REQUEST)
+
+        project.members.add(member)
+        project_serializer = self.serializer_class(
+            project, context=self.get_serializer_context())
+        return Response(project_serializer.data)
 
 
 class MemberViewSet(ModelViewSet):
