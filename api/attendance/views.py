@@ -18,6 +18,15 @@ class ProjectViewSet(ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
+    @action(detail=True, url_path='non-members')
+    def non_members(self, request, pk=None):
+        project = self.get_object()
+        non_members = Member.objects.exclude(id__in=project.members.all())
+        member_serializer = MemberSerializer(
+            non_members, many=True, context=self.get_serializer_context())
+
+        return Response(member_serializer.data)
+
 
 class MemberViewSet(ModelViewSet):
     queryset = Member.objects.all()
@@ -37,9 +46,8 @@ class MeetingViewSet(ModelViewSet):
     def participation(self, request, pk=None):
         meeting = self.get_object()
         participations = meeting.participations.all()
-        participation_serializer = ParticipationSerializer(
-            participations, many=True
-        )
+        participation_serializer = ParticipationSerializer(participations,
+                                                           many=True)
         data = {
             'participations': participation_serializer.data,
             'observations': meeting.observations
