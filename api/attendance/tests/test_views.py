@@ -14,6 +14,48 @@ from api.attendance.serializers import ParticipationSerializer
 
 
 @pytest.mark.django_db
+def test_all_members_when_no_members_in_project(client, project, member):
+    """Test that all existing members are retrieved when calling service
+    non-members if project has no members"""
+    project.members.clear()
+    url = reverse('project-non-members', kwargs={'pk': project.pk})
+    response = client.get(url)
+    data = response.data
+
+    assert response.status_code == HTTP_200_OK
+    assert len(data) == 1
+    assert data[0]['key'] == member.id
+
+
+@pytest.mark.django_db
+def test_remaining_members_when_some_members_in_project(client, project):
+    """Test that remaining members are retried when calling service
+    non-members if project has already some members"""
+    new_member = Member.objects.create(first_name='Peter',
+                                       last_name='Jones',
+                                       email='peter.jones@gmail.com')
+
+    url = reverse('project-non-members', kwargs={'pk': project.pk})
+    response = client.get(url)
+    data = response.data
+
+    assert response.status_code == HTTP_200_OK
+    assert len(data) == 1
+    assert data[0]['key'] == new_member.id
+
+
+@pytest.mark.django_db
+def test_no_members_when_all_members_in_project(client, project):
+    """Test that no members are retrieve when calling service
+    non-members if all members are already in project"""
+    url = reverse('project-non-members', kwargs={'pk': project.pk})
+    response = client.get(url)
+    data = response.data
+    assert response.status_code == HTTP_200_OK
+    assert len(data) == 0
+
+
+@pytest.mark.django_db
 def test_participation_view_no_participations_no_observations(client, project):
     """Test that participation view in MeetingViewSet returns 200 reponse,
     data has participations which is an empty list, and observations which is a string
