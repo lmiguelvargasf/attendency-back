@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from attendance.models import Project, Member, Meeting, Participation
-from .serializers import (ProjectTableSerializer, MemberTableSerializer,
+from .serializers import (ProjectSerializer, MemberTableSerializer,
                           MeetingTableSerializer, SimpleProjectSerializer,
                           MeetingSerializer, ParticipationSerializer)
 
@@ -16,7 +16,7 @@ class SimpleProjectList(ListAPIView):
 
 class ProjectViewSet(ModelViewSet):
     queryset = Project.objects.all()
-    serializer_class = ProjectTableSerializer
+    serializer_class = ProjectSerializer
 
 
 class MemberViewSet(ModelViewSet):

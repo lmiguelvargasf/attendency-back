@@ -18,7 +18,7 @@ class SimpleProjectSerializer(BaseReactModelSerializer):
         fields = BaseReactModelSerializer.Meta.fields + ('title',)
 
 
-class ProjectTableSerializer(BaseReactModelSerializer):
+class ProjectSerializer(BaseReactModelSerializer):
 
     class Meta:
         model = Project
