@@ -11,7 +11,7 @@ def simple_project_serializer(project, serializer_context):
 
 
 @pytest.fixture
-def project_table_serializer(project, serializer_context):
+def project_serializer(project, serializer_context):
     return ProjectSerializer(project, context=serializer_context)
 
 
@@ -51,19 +51,19 @@ def test_simple_project_serializer_key_content(project,
 
 
 @pytest.mark.django_db
-def test_project_table_serializer_has_exected_fields(project_table_serializer):
+def test_project_serializer_has_exected_fields(project_serializer):
     """Test that ProjectSerializer contains expected fields"""
-    assert set(project_table_serializer.data.keys()) == {
+    assert set(project_serializer.data.keys()) == {
         'key', 'url', 'title', 'start_date', 'description', 'team'
     }
 
 
 @pytest.mark.django_db
-def test_project_table_serializer_key_content(project,
-                                              project_table_serializer):
+def test_project_serializer_key_content(project,
+                                              project_serializer):
     """Test that ProjectSerializer's key field contains
     the value of Project's id field"""
-    assert project_table_serializer.data['key'] == project.id
+    assert project_serializer.data['key'] == project.id
 
 
 @pytest.mark.django_db
