@@ -1,10 +1,11 @@
 from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.viewsets import ModelViewSet
 
 from attendance.models import Project, Member, Meeting, Participation
-from .serializers import (ProjectTableSerializer, MemberTableSerializer,
+from .serializers import (ProjectSerializer, MemberSerializer,
                           MeetingTableSerializer, SimpleProjectSerializer,
                           MeetingSerializer, ParticipationSerializer)
 
@@ -16,12 +17,40 @@ class SimpleProjectList(ListAPIView):
 
 class ProjectViewSet(ModelViewSet):
     queryset = Project.objects.all()
-    serializer_class = ProjectTableSerializer
+    serializer_class = ProjectSerializer
+
+    @action(detail=True, url_path='non-members')
+    def non_members(self, request, pk=None):
+        project = self.get_object()
+        non_members = Member.objects.exclude(id__in=project.members.all())
+        member_serializer = MemberSerializer(
+            non_members, many=True, context=self.get_serializer_context())
+
+        return Response(member_serializer.data)
+
+    @action(detail=True, methods=['post'], url_path='add-member')
+    def add_member(self, request, pk=None):
+        project = self.get_object()
+
+        try:
+            member = Member.objects.get(id=request.data['key'])
+        except Member.DoesNotExist:
+            return Response({'error': 'Member does not exists'},
+                            status=HTTP_400_BAD_REQUEST)
+
+        if member in project.members.all():
+            return Response({'error': 'Member already in project'},
+                            status=HTTP_400_BAD_REQUEST)
+
+        project.members.add(member)
+        project_serializer = self.serializer_class(
+            project, context=self.get_serializer_context())
+        return Response(project_serializer.data)
 
 
 class MemberViewSet(ModelViewSet):
     queryset = Member.objects.all()
-    serializer_class = MemberTableSerializer
+    serializer_class = MemberSerializer
 
 
 class MeetingTableList(ListAPIView):
@@ -37,9 +66,8 @@ class MeetingViewSet(ModelViewSet):
     def participation(self, request, pk=None):
         meeting = self.get_object()
         participations = meeting.participations.all()
-        participation_serializer = ParticipationSerializer(
-            participations, many=True
-        )
+        participation_serializer = ParticipationSerializer(participations,
+                                                           many=True)
         data = {
             'participations': participation_serializer.data,
             'observations': meeting.observations
