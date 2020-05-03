@@ -54,6 +54,25 @@ class ProjectViewSet(ModelViewSet):
         project_serializer = self.serializer_class(
             project, context=self.get_serializer_context())
         return Response(project_serializer.data)
+    
+    @action(detail=True, methods=['post'], url_path='remove-member')
+    def remove_member(self, request, pk=None):
+        project = self.get_object()
+
+        try:
+            member = Member.objects.get(id=request.data['key'])
+        except Member.DoesNotExist:
+            return Response({'error': 'Member does not exists'},
+                            status=HTTP_400_BAD_REQUEST)
+
+        if member not in project.members.all():
+            return Response({'error': 'Member is not in project'},
+                            status=HTTP_400_BAD_REQUEST)
+
+        project.members.remove(member)
+        project_serializer = self.serializer_class(
+            project, context=self.get_serializer_context())
+        return Response(project_serializer.data)
 
 
 class MemberViewSet(ModelViewSet):
