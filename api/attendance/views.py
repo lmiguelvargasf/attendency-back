@@ -27,6 +27,14 @@ class ProjectViewSet(ModelViewSet):
             non_members, many=True, context=self.get_serializer_context())
 
         return Response(member_serializer.data)
+    
+    @action(detail=True)
+    def members(self, request, pk=None):
+        project = self.get_object()
+        member_serializer = MemberSerializer(
+            project.members.all(), many=True, context=self.get_serializer_context())
+
+        return Response(member_serializer.data)
 
     @action(detail=True, methods=['post'], url_path='add-member')
     def add_member(self, request, pk=None):
