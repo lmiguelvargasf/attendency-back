@@ -77,9 +77,10 @@ def test_project_members_are_retrieved(api_client, project, member):
 
 
 @pytest.mark.django_db
-def test_400_response_when_member_does_not_exist(api_client, project):
+def test_400_response_when_member_does_not_exist_add_member(
+    api_client, project):
     """Test that 400 response is returned when trying to add a member
-    who does not exist to a project"""
+    who does not exist in database"""
     url = reverse('project-add-member', kwargs={'pk': project.pk})
     response = api_client.post(url, {'key': 100}, format='json')
     data = response.data
@@ -115,6 +116,47 @@ def test_member_is_added_to_project(api_client, project, new_member):
     assert response.status_code == HTTP_200_OK
     assert len(project.members.all()) == 2
     assert project.members.first().id == new_member.pk
+
+
+@pytest.mark.django_db
+def test_400_response_when_member_does_not_exist_remove_member(
+    api_client, project):
+    """Test that 400 response is returned when trying to remove a member
+    who does not exist in database"""
+    url = reverse('project-remove-member', kwargs={'pk': project.pk})
+    response = api_client.post(url, {'key': 100}, format='json')
+    data = response.data
+
+    assert response.status_code == HTTP_400_BAD_REQUEST
+    assert 'error' in data
+    assert data['error'] == 'Member does not exists'
+    assert len(project.members.all()) == 1
+
+
+@pytest.mark.django_db
+def test_400_response_when_member_not_in_project(api_client, project,
+                                                 new_member):
+    """Test that 400 response is returned when trying to remove a member
+    that is not in the project"""
+    url = reverse('project-remove-member', kwargs={'pk': project.pk})
+    response = api_client.post(url, {'key': new_member.pk}, format='json')
+    data = response.data
+
+    assert response.status_code == HTTP_400_BAD_REQUEST
+    assert 'error' in data
+    assert data['error'] == 'Member is not in project'
+    assert len(project.members.all()) == 1
+
+
+@pytest.mark.django_db
+def test_member_is_removed_from_project(api_client, project, member):
+    """Test that a member is successfully removed from a project"""
+    url = reverse('project-remove-member', kwargs={'pk': project.pk})
+    response = api_client.post(url, {'key': member.pk}, format='json')
+    data = response.data
+
+    assert response.status_code == HTTP_200_OK
+    assert len(project.members.all()) == 0
 
 
 @pytest.mark.django_db
