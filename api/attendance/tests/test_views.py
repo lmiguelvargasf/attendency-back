@@ -66,6 +66,17 @@ def test_no_members_when_all_members_in_project(api_client, project):
 
 
 @pytest.mark.django_db
+def test_project_members_are_retrieved(api_client, project, member):
+    """Test that members from project are retrieved"""
+    url = reverse('project-members', kwargs={'pk': project.pk})
+    response = api_client.get(url)
+    data = response.data
+    assert response.status_code == HTTP_200_OK
+    assert len(data) == 1
+    assert data[0]['key'] == member.id
+
+
+@pytest.mark.django_db
 def test_400_response_when_member_does_not_exist(api_client, project):
     """Test that 400 response is returned when trying to add a member
     who does not exist to a project"""
