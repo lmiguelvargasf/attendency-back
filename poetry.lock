@@ -146,17 +146,6 @@ version = "1.1.2"
 
 [[package]]
 category = "main"
-description = "JSON Web Token based authentication for Django REST framework"
-name = "djangorestframework-jwt"
-optional = false
-python-versions = "*"
-version = "1.11.0"
-
-[package.dependencies]
-PyJWT = ">=1.5.2,<2.0.0"
-
-[[package]]
-category = "main"
 description = "A minimal JSON Web Token authentication plugin for Django REST Framework"
 name = "djangorestframework-simplejwt"
 optional = false
@@ -787,7 +776,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "9501d19b5330d6841054b2a7e55c46a19ef8359efeda76166c6feaa583f530eb"
+content-hash = "e9c9b6d62aca9de9630fd93a317aa6c5472c7b5eb348e7ab2c4d6bd7bee9514f"
 python-versions = ">=3.6,<3.9"
 
 [metadata.files]
@@ -845,10 +834,6 @@ djangorestframework = [
 ]
 djangorestframework-camel-case = [
     {file = "djangorestframework-camel-case-1.1.2.tar.gz", hash = "sha256:9eba4a2f959e1e46b7d0f6136baf950552b2a4a695d4bb3cfb0c37be25294574"},
-]
-djangorestframework-jwt = [
-    {file = "djangorestframework-jwt-1.11.0.tar.gz", hash = "sha256:5efe33032f3a4518a300dc51a51c92145ad95fb6f4b272e5aa24701db67936a7"},
-    {file = "djangorestframework_jwt-1.11.0-py2.py3-none-any.whl", hash = "sha256:ab15dfbbe535eede8e2e53adaf52ef0cf018ee27dbfad10cbc4cbec2ab63d38c"},
 ]
 djangorestframework-simplejwt = [
     {file = "djangorestframework_simplejwt-4.4.0-py3-none-any.whl", hash = "sha256:288ee78618d906f26abf6282b639b8f1806ce1d9a7578897a125cf79c609f259"},
