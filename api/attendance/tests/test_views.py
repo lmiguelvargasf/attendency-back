@@ -1,21 +1,29 @@
 from datetime import datetime
-import json
 
+from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.test import APIClient
 from rest_framework.utils.serializer_helpers import ReturnList
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 import pytest
 
-from attendance.models import Project, Meeting, Member
+from attendance.models import Meeting, Member
 from api.attendance.serializers import ParticipationSerializer
+
 
 
 @pytest.fixture
 def api_client():
-    return APIClient()
+    user = User.objects.create_user(username='john', email='js@js.com', password='js.sj')
+    client = APIClient()
+    refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
+
+    return client
 
 
 @pytest.fixture
