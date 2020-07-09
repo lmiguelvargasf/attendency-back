@@ -119,7 +119,6 @@ def test_member_is_added_to_project(api_client, project, new_member):
     """Test that a member is successfully added to a project"""
     url = reverse('project-add-member', kwargs={'pk': project.pk})
     response = api_client.post(url, {'key': new_member.pk}, format='json')
-    data = response.data
 
     assert response.status_code == HTTP_200_OK
     assert len(project.members.all()) == 2
@@ -161,7 +160,6 @@ def test_member_is_removed_from_project(api_client, project, member):
     """Test that a member is successfully removed from a project"""
     url = reverse('project-remove-member', kwargs={'pk': project.pk})
     response = api_client.post(url, {'key': member.pk}, format='json')
-    data = response.data
 
     assert response.status_code == HTTP_200_OK
     assert len(project.members.all()) == 0
