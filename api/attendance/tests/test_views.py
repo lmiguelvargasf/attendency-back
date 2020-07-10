@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
@@ -17,10 +16,9 @@ from api.attendance.serializers import ParticipationSerializer
 
 
 @pytest.fixture
-def api_client():
-    user = User.objects.create_user(username='john', email='js@js.com', password='js.sj')
+def api_client(admin_user):
     client = APIClient()
-    refresh = RefreshToken.for_user(user)
+    refresh = RefreshToken.for_user(admin_user)
     client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
 
     return client
