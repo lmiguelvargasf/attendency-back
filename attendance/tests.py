@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.utils.timezone import make_aware, localtime
+from django.utils.timezone import make_aware
 
 import pytest
 import pytz
