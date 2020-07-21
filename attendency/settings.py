@@ -131,6 +131,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # corsheaders
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
+    'https://attendency-web.herokuapp.com',
 ]
 
 # rest_framework
