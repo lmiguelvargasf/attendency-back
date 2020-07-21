@@ -1,4 +1,4 @@
-# Attendancy
+# Attendency
 
 This is an API to track people attending the meetings of my personal projects.
 
@@ -43,13 +43,13 @@ pyenv install 3.8.2
 `pyenv`'s plugin `pyenv-virtualenv` is used to create a virtual environment:
 
 ```bash
-pyenv virtualenv 3.8.2 attendancy-venv
+pyenv virtualenv 3.8.2 attendency-venv
 ```
 
 Now activate the previously created virtual environment:
 
 ```bash
-pyenv activate attendancy-venv
+pyenv activate attendency-venv
 ```
 
 ### Install dependencies

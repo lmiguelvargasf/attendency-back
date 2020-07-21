@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "attendancy"
+name = "attendency"
 version = "0.1.0"
 description = "API to track people attending meetings"
 authors = ["M <m@mathsistor.com>"]
