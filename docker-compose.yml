@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: attendency_app
+    image: attendency_app:latest
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/app/
+    ports:
+      - 8000:8000
+      - 8888:8888
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+  db:
+    container_name: attendency_db
+    image: postgres:alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=user
+      - POSTGRES_DB=attendency
+
+volumes:
+  postgres_data:
