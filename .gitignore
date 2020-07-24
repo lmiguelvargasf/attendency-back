@@ -177,3 +177,6 @@ dmypy.json
 .history
 
 # End of https://www.gitignore.io/api/django,python,visualstudiocode
+.gitsecret/keys/random_seed
+!*.secret
+.env.dev
