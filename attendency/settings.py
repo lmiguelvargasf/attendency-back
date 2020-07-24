@@ -17,7 +17,8 @@ import environ
 
 
 env = environ.Env(
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    SECRET_KEY=(str, 'secret')
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
