@@ -1,5 +1,7 @@
 # Attendency
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 This is an API to track people attending the meetings of my personal projects.
 
 ## Technologies
@@ -64,12 +66,18 @@ docker-compose exec app coverage html
 
 The report is located at `./htmlcov/index.html` and it could be open in your browser.
 
+## License
+
+Copyright © 2020, [L Miguel Vargas F][M]. This project is licensed under the terms of the [MIT license][license].
+
+[api]: http://localhost:8000/api
 [Docker]: https://www.docker.com
 [docker-compose.yml]: ./docker-compose.yml
 [Django]: https://www.djangoproject.com
 [DRF]: https://www.django-rest-framework.org
 [install-docker]: https://www.docker.com/get-started
-[api]: http://localhost:8000/api
+[license]: ./LICENSE
+[M]: https://github.com/lmiguelvargasf
 [poetry]: https://python-poetry.org
 [PostgreSQL]: https://www.postgresql.org
 [pytest]: https://docs.pytest.org/en/stable
