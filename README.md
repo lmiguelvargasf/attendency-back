@@ -2,94 +2,75 @@
 
 This is an API to track people attending the meetings of my personal projects.
 
+## Technologies
+
+The main technologies used in this project are:
+
+* [Docker][]
+* [PostgreSQL][] (container)
+* [Python 3][python] (container)
+* [poetry][]
+* [Django][]
+* [Django REST Framework][DRF]
+
 ## Getting Started
 
 ### Prerequisites
 
-You need to install the latest version of following software before setting up this project:
+The application has been containerized using Docker, so you have to [install][install-docker] the latest version of Docker before setting up this project.
 
-* [python][]
-* [pyenv][]
-* [pyenv-virtualenv][]
-* [poetry][]
-* [sqlite][]
-
-### Setting Up Project
+### Set Up Project
 
 #### Clone repository
 
-Clone this repository:
+Clone this repo and navigate inside its root directory:
 
 ```bash
-git clone https://github.com/lmiguelvargasf/attendency
+git clone https://github.com/lmiguelvargasf/attendency-back && cd attendency-back
 ```
 
-Navigate inside the project's root directory:
+#### Start Services
+
+Start the services defined in [docker-compose.yml][]:
 
 ```bash
-cd attendency
+docker-compose up
 ```
 
-#### Install python
+The previous command will pull and/or build the required images in case they are not found locally.
 
-`pyenv` is used to install the specific version of `python` required in this project:
+Open up your browser at [http://localhost:8000/api][api]. You are all set 🎉!
 
-```bash
-pyenv install 3.8.2
-```
+## Testing and Coverage
 
-#### Create and activate a virtual environment
 
-`pyenv`'s plugin `pyenv-virtualenv` is used to create a virtual environment:
+[`pytest`][pytest] is used for testing, and a test coverage of 100% is expected.
 
-```bash
-pyenv virtualenv 3.8.2 attendency-venv
-```
-
-Now activate the previously created virtual environment:
-
-```bash
-pyenv activate attendency-venv
-```
-
-### Install dependencies
-
-`poetry` is used to install and manage dependencies. To install the dependencies for this project run:
-
-```bash
-poetry install
-```
-
-### Applying migrations
-
-Run the following command in order to apply the migrations:
-
-```bash
-python manage.py migrate
-```
-
-### Run server
-
-In order to start a lightweight development web server on the local machine, run this command:
-
-```bash
-python manage.py runserver
-```
-
-Open up your browser at [http://localhost:8080][localhost]. You are all set 🎉!
-
-## Running tests
+### Run Tests
 
 Execute the following command in order to run the tests:
 
 ```bash
-pytest
+docker-compose exec app pytest
 ```
 
+### Generate Coverage Report
 
-[localhost]: http://localhost:8080
-[poetry]: https://python-poetry.org/
-[pyenv]: https://github.com/pyenv/pyenv
-[pyenv-virtualenv]: https://github.com/pyenv/pyenv-virtualenv
-[python]: https://www.python.org//
-[sqlite]: https://www.sqlite.org/index.html
+Once you have run the tests, execute the following command in order to generate an html coverage report:
+
+```bash
+docker-compose exec app coverage html
+```
+
+The report is located at `./htmlcov/index.html` and it could be open in your browser.
+
+[Docker]: https://www.docker.com
+[docker-compose.yml]: ./docker-compose.yml
+[Django]: https://www.djangoproject.com
+[DRF]: https://www.django-rest-framework.org
+[install-docker]: https://www.docker.com/get-started
+[api]: http://localhost:8000/api
+[poetry]: https://python-poetry.org
+[PostgreSQL]: https://www.postgresql.org
+[pytest]: https://docs.pytest.org/en/stable
+[python]: https://www.python.org
