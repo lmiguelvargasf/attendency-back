@@ -28,7 +28,8 @@ jobs:
       - run:
           name: Run Pytest, report coverage
           command: |
-            poetry run pytest
+            mkdir test-results
+            poetry run pytest --junitxml=test-results/junit.xml
             poetry run coverage html
       - store_test_results:
           path: test-results
