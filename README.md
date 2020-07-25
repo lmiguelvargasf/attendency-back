@@ -1,5 +1,7 @@
 # Attendency
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 This is an API to track people attending the meetings of my personal projects.
 
 ## Technologies
