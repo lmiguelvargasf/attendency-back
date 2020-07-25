@@ -2,6 +2,7 @@
 
 [![lmiguelvargasf](https://circleci.com/gh/lmiguelvargasf/attendency-back.svg?style=svg)](https://app.circleci.com/pipelines/github/lmiguelvargasf/attendency-back)
 [![python](https://upload.wikimedia.org/wikipedia/commons/a/a5/Blue_Python_3.8_Shield_Badge.svg)](https://www.python.org/)
+[![coverage](./coverage.svg)](./coverage.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This is an API to track people attending the meetings of my personal projects.
