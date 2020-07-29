@@ -22,7 +22,7 @@ RUN poetry config virtualenvs.create false \
   |  poetry run pip install -r /dev/stdin \
   && pip install gunicorn
 COPY . .
-RUN poetry install --no-interaction --no-ansi 
+RUN poetry install --no-dev --no-interaction --no-ansi
 
 RUN python manage.py collectstatic --noinput
 
