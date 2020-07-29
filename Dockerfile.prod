@@ -12,11 +12,17 @@ RUN pip install -U pip \
     && curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 ENV PATH="${PATH}:/root/.poetry/bin"
 
+# Install dependencies
 WORKDIR /usr/src/app
-COPY . .
+# The following RUN commands have been taken and modified from:
+# https://github.com/python-poetry/poetry/issues/1301#issuecomment-609009714
+COPY poetry.lock pyproject.toml ./
 RUN poetry config virtualenvs.create false \
-  && poetry install --no-dev --no-interaction --no-ansi \
+  && poetry export --without-hashes -f requirements.txt \
+  |  poetry run pip install -r /dev/stdin \
   && pip install gunicorn
+COPY . .
+RUN poetry install --no-dev --no-interaction --no-ansi
 
 RUN python manage.py collectstatic --noinput
 
