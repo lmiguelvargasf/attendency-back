@@ -22,5 +22,10 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
+.circleci
+.coverage
+.gitsecret
 .ipynb_checkpoints/
 README.md
+LICENSE
+heroku.yml
