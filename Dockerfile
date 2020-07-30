@@ -18,6 +18,7 @@ WORKDIR /usr/src/app
 # https://github.com/python-poetry/poetry/issues/1301#issuecomment-609009714
 COPY poetry.lock pyproject.toml ./
 RUN poetry config virtualenvs.create false \
+  && poetry run pip install -U pip \
   && poetry export --without-hashes -f requirements.txt --dev \
   |  poetry run pip install -r /dev/stdin
 COPY . .
